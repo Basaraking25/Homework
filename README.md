@@ -69,4 +69,4 @@ mars_prediction <- predict(marsMod,prediction)
 result <- data.frame(cbind(linear_prediction,aic_prediction,gam_prediction,mars_prediction,observation))
 names(result)[names(result) == 'CLAIM'] <- 'mars_prediction'
 names(result)[names(result) == 'CLAIM.1'] <- 'observed CLAIM'
-result
+result 
