@@ -51,3 +51,22 @@ summary(marsMod, digits = 2, style = "pmax")#why we use this kind of summary
 vip(linearMod)
 vip(aic)
 vip(marsMod)
+
+###prediction
+library(dplyr)
+prediction <- slice(claimdata,c(100,200,300))
+Log_col <- c("DED","GRT","DWT","VALUE")
+prediction[Log_col] <- log(prediction[Log_col])
+prediction["AGE"] <- log(prediction["AGE"]+1)
+
+observation <- slice(claimdata,c(100,200,300))
+observation["CLAIM"] <- log(observation["CLAIM"])
+
+linear_prediction <- predict.lm(linearMod,prediction)
+aic_prediction <- predict(aic,prediction)
+gam_prediction <- predict.gam(gamMod,prediction)
+mars_prediction <- predict(marsMod,prediction)
+result <- data.frame(cbind(linear_prediction,aic_prediction,gam_prediction,mars_prediction,observation))
+names(result)[names(result) == 'CLAIM'] <- 'mars_prediction'
+names(result)[names(result) == 'CLAIM.1'] <- 'observed CLAIM'
+result
